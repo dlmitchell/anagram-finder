@@ -26,15 +26,6 @@ namespace Ibotta.Controllers
         }
 
         /// <summary>
-        /// Checks to see if the word exists in the dictionary
-        /// </summary>
-        [HttpGet("words/{word}.{format?}")]
-        public IActionResult Get(string word)
-        {
-            return Ok(_repository.Exists(word));
-        }
-
-        /// <summary>
         /// Takes a JSON array of English-language words and adds them to the corpus (data store).
         /// </summary>
         /// <remarks>

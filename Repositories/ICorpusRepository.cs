@@ -9,11 +9,6 @@ namespace Ibotta.Repositories
     public interface ICorpusRepository
     {
         /// <summary>
-        /// Returns a true or false if the word exists in the corpus
-        /// </summary>
-        bool Exists(string word);
-
-        /// <summary>
         /// Adds a list of words to the corpus
         /// </summary>
         void Add(IEnumerable<string> words);

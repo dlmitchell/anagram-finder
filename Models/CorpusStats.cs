@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Ibotta.Models
 {
     /// <summary>
@@ -29,5 +31,10 @@ namespace Ibotta.Models
         /// Average word length in the corpus
         /// </summary>
         public double Average { get; set; }
+
+        /// <summary>
+        /// List of the words with the most anagrams in the corpus
+        /// </summary>
+        public IEnumerable<string> MostAnagrams { get; set; }
     }
 }

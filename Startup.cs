@@ -29,7 +29,7 @@ namespace Ibotta
             services.AddMvc();
 
             // dependcy injection
-            services.AddSingleton<ICorpusRepository, CorpusRepository>();
+            services.AddSingleton<ICorpusRepository, CorpusRepositoryDictionary>();            
 
             // swagger docs
             services.AddSwaggerGen(c =>
@@ -51,7 +51,7 @@ namespace Ibotta
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
-            {
+            {                
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ibotta Anagrams");
             });
         }

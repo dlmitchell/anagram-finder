@@ -50,3 +50,4 @@ I considered a tree at first, but given the simplicity of the dictionary solutio
 ## TODO:
 
 - Endpoint to return all anagram groups of size >= *x*
+- Add endpoint to reload the dictionary file in case it gets blown away. 

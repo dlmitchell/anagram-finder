@@ -4,7 +4,7 @@ Anagram Finder
 
 To Run:
 
-Download and install dotnet core (runs on mac/linux! No windows required) - https://www.microsoft.com/net/learn/get-started/macos
+Download and install dotnet core (runs on mac/linux! No windows required) - https://www.microsoft.com/net/learn/get-started/
 
 Check out the project, cd to the root directory and do the following: 
 

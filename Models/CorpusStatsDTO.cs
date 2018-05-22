@@ -5,7 +5,7 @@ namespace Ibotta.Models
     /// <summary>
     /// Stats on the corpus
     /// </summary>
-    public class CorpusStats
+    public class CorpusStatsDTO
     {
         /// <summary>
         /// Number of words in the corpus
@@ -31,10 +31,5 @@ namespace Ibotta.Models
         /// Average word length in the corpus
         /// </summary>
         public double Average { get; set; }
-
-        /// <summary>
-        /// List of the words with the most anagrams in the corpus
-        /// </summary>
-        public IEnumerable<IEnumerable<string>> MostAnagrams { get; set; }
     }
 }

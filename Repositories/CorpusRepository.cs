@@ -54,7 +54,7 @@ namespace Ibotta.Repositories
             return corpus.GetAnagrams(words.First(), includeProperNouns: true).Count() == (words.Count() - 1);
         }
 
-        public CorpusStats GetStats()
+        public CorpusStatsDTO GetStats()
         {
             return Corpus.GetStats();
         }

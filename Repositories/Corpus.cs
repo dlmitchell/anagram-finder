@@ -6,7 +6,7 @@ using Ibotta.Models;
 namespace Ibotta.Repositories
 {
     /// <summary>
-    /// Data structure for holding dictionary of words.
+    /// Data structure for holding dictionary of words in order to easily find anagrams
     /// </summary>
     /// <remarks>
     /// The easiest way to tell if two words are anagrams is to sort them both then do a simple comparison
@@ -81,11 +81,11 @@ namespace Ibotta.Repositories
             return new List<string>();
         }
 
-        public CorpusStats GetStats()
+        public CorpusStatsDTO GetStats()
         {
             var words = _corpus.Values.ToList().SelectMany(x => x).ToList();
             var sorted = words.OrderBy(x => x.Original.Length).Select(x => x.Original.Length);
-            return new CorpusStats()
+            return new CorpusStatsDTO()
             {
                 Count = words.Count,
                 Min = sorted.Any() ? sorted.Min() : 0,

@@ -41,6 +41,6 @@ namespace Ibotta.Repositories
         /// <summary>
         /// Returns a set of stats based on the corpus
         /// </summary>
-        CorpusStats GetStats();
+        CorpusStatsDTO GetStats();
     }
 }

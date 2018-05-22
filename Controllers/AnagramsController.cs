@@ -35,7 +35,7 @@ namespace Ibotta.Controllers
         public IActionResult Get(string word, int? limit = null, bool? includeProperNouns = null)
         {
             var anagrams = _repository.GetAnagrams(word, includeProperNouns ?? true).Take(limit ?? int.MaxValue);
-            return Ok(new Anagram() { Anagrams = anagrams });
+            return Ok(new AnagramDTO() { Anagrams = anagrams });
         }
 
 

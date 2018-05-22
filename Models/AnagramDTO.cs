@@ -5,7 +5,7 @@ namespace Ibotta.Models
     /// <summary>
     /// Anagrams DTO
     /// </summary>
-    public class Anagram
+    public class AnagramDTO
     {
         /// <summary>
         /// An array of anagrams 

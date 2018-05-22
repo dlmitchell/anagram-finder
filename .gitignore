@@ -1,0 +1,6 @@
+**/bin/
+**/obj
+site/**
+publish.zip
+site.zip
+aws-windows-deployment-manifest.json

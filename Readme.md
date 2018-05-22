@@ -4,7 +4,7 @@ Anagram Finder
 
 To Run:
 
-Download and install dotnet core (runs on mac/linux! No windows required) - https://www.microsoft.com/net/learn/get-started/macos
+Download and install dotnet core (runs on mac/linux! No windows required) - https://www.microsoft.com/net/learn/get-started/
 
 Check out the project, cd to the root directory and do the following: 
 
@@ -14,6 +14,16 @@ $ dotnet run
 ```
 
 That should be it! API will start on port 5000 and will default to Swagger docs describing the API. 
+
+## Directory Structure
+
+- Controllers: controllers (duh!) 
+- App_Data: dotnet convention for keeping data files required for the project. In this case, it's the dictionary.txt
+- Extensions: extension methods for strings (only one method now, but these tend to grow)
+- Models: DTOs for models coming in/out of the API
+- Repositories: Data access classes. Used for interfacing with the data, in this case a text file and the Corpus
+
+Program.cs starts the project and Startup.cs is for configuring the API. 
 
 ## Implementation Details
 
@@ -41,3 +51,4 @@ I considered a tree at first, but given the simplicity of the dictionary solutio
 ## TODO:
 
 - Endpoint to return all anagram groups of size >= *x*
+- Add endpoint to reload the dictionary file in case it gets blown away. 

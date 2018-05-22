@@ -21,7 +21,7 @@ namespace Ibotta.Repositories
         /// <summary>
         /// Deletes a word from the corpus
         /// </summary>
-        void Delete(string word);
+        void Delete(string word, bool includeAnagrams);
 
         /// <summary>
         /// Deletes the entire corpus
@@ -32,6 +32,11 @@ namespace Ibotta.Repositories
         /// Returns a list of anagrams based on the given word
         /// </summary>
         IEnumerable<string> GetAnagrams(string word, bool includeProperNouns);
+
+        /// <summary>
+        /// Returns a set of stats based on the corpus
+        /// </summary>
+        IEnumerable<IEnumerable<string>>  GetMostCommonAnagrams(int size);
 
         /// <summary>
         /// Returns a set of stats based on the corpus

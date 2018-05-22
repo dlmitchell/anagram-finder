@@ -54,9 +54,9 @@ namespace Ibotta.Controllers
         /// Deletes a single word from the data store.
         /// </summary>
         [HttpDelete("words/{word}.{format?}")]
-        public IActionResult Delete(string word)
+        public IActionResult Delete(string word, bool? includeAnagrams = null)
         {
-            _repository.Delete(word);
+            _repository.Delete(word, includeAnagrams ?? false);
             return NoContent();
         }
 

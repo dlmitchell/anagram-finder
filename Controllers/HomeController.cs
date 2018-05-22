@@ -9,12 +9,9 @@ namespace Ibotta.Controllers
     public class HomeController : Controller
     {
         /// <summary>
-        /// Just redirects to the swagger docs
-        /// </summary>
+        /// Just redirects to swagger docs
+        /// </summary>   
         [HttpGet]
-        public IActionResult Index()
-        {
-            return Redirect("~/swagger");
-        }
+        public IActionResult Get() => Redirect("~/swagger");
     }
 }

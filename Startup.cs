@@ -29,7 +29,7 @@ namespace Ibotta
             services.AddMvc();
 
             // dependcy injection
-            services.AddSingleton<ICorpusRepository, CorpusRepositoryDictionary>();            
+            services.AddSingleton<ICorpusRepository, CorpusRepository>();            
 
             // swagger docs
             services.AddSwaggerGen(c =>

@@ -35,6 +35,6 @@ namespace Ibotta.Models
         /// <summary>
         /// List of the words with the most anagrams in the corpus
         /// </summary>
-        public IEnumerable<string> MostAnagrams { get; set; }
+        public IEnumerable<IEnumerable<string>> MostAnagrams { get; set; }
     }
 }

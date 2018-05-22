@@ -34,5 +34,15 @@ namespace Ibotta.Controllers
         {
             return Ok(_repository.GetStats());
         }
+
+        /// <summary>
+        /// Gets most common anagrams in the corpus
+        /// </summary>        
+        [HttpGet("stats/anagrams")]
+        [HttpGet("stats/anagrams.{format}")]
+        public IActionResult GetMostCommonAnagrams(int? limit = null)
+        {
+            return Ok(_repository.GetMostCommonAnagrams(limit ?? 10));
+        }
     }
 }

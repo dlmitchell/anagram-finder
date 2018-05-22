@@ -4,40 +4,86 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Ibotta.Models;
+using Ibotta.Extensions;
 using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Ibotta.Repositories
 {
+    internal class Word 
+    {
+        public string Original { get; set; }
+        public string Sorted { get; set; }
+    }
+
     internal class CorpusRepository : ICorpusRepository
     {        
-        private List<string> _corpus; 
-        private List<string> Corpus
+        private Dictionary<string, List<Word>> _corpus; 
+        private Dictionary<string, List<Word>>  Corpus
         {
             get
             {
                 if (_corpus == null)
                 {
-                    _corpus = new List<string>();
+                    _corpus = new Dictionary<string, List<Word>>();
+                    var lines = File.ReadAllLines(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "App_Data/dictionary.txt"));                   
+                    foreach (var line in lines)
+                    {
+                        var sorted = line.Sort();
+            
+                        var w = new Word() { Original = line, Sorted = sorted };
 
-                    var lines = File.ReadAllLines(Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "App_Data/dictionary.txt")); 
-
-                    _corpus.AddRange(lines);
+                        if (_corpus.ContainsKey(sorted))
+                            _corpus[sorted].Add(w);
+                        else 
+                            _corpus.Add(sorted, new List<Word>() { w });
+                    }
                 }
 
                 return _corpus;
             }
         }
 
-        public void Add(IEnumerable<string> words)
+        private IEnumerable<string> GetPermutations(string word, int size)
         {
-            // TODO: dupe check?
-            if (words != null && words.Any())
-                Corpus.AddRange(words);
+            List<string> perms = new List<string>();
+            foreach (var c in word)
+            {
+
+            }
+
+            return new [] {word};            
         }
 
-        public void Delete(string word)
+        public void Add(IEnumerable<string> words)
         {
-            Corpus.RemoveAll(x => x == word);
+            foreach (var word in words)
+                Add(word);
+        }
+
+        private void Add(string word)
+        {
+            var sorted = word.Sort();
+            
+            var w = new Word() { Original = word, Sorted = sorted };
+
+            if (Corpus.ContainsKey(sorted))
+                Corpus[sorted].Add(w);
+            else 
+                Corpus.Add(sorted, new List<Word>() { w });
+        }
+
+        public void Delete(string word, bool includeAnagrams)
+        {
+            var sorted = word.Sort();
+            if (Corpus.ContainsKey(sorted))
+            {
+                Corpus[sorted].RemoveAll(x => x.Original == word);
+
+                // delete the whole key if the set of anagrams are empty 
+                // OR if we're deleting anagrams along with the word
+                if (!Corpus[sorted].Any() || includeAnagrams)
+                    Corpus.Remove(sorted);
+            }                
         }
 
         public void Delete()
@@ -47,39 +93,57 @@ namespace Ibotta.Repositories
 
         public bool Exists(string word)
         {
-            return Corpus.Any(x => x == word);
+            var sorted = word.Sort();
+            return Corpus.ContainsKey(sorted) && Corpus[sorted].Any(x => x.Original == word);
         }
 
         public IEnumerable<string> GetAnagrams(string word, bool includeProperNouns)
         {   
-            // sort the original word, e.g., read -> ader
-            var sorted = string.Join("", word.OrderBy(x => x));
-            
-            // find all words with the same length and eliminate any words that don't match the letters
-            var pool = Corpus.Where(x => x.Length == word.Length && x.ToLower().Except(word.ToLower()).Count() == 0);
-            
-            // sort the pool of candidates, look for 
-            var matches = pool
-                .Select(x => new { original = x, sorted = string.Join("", x.Select(y => y.ToString()).OrderBy(y => y, StringComparer.OrdinalIgnoreCase)) })
-                .Where(x => 
-                    x.original != word && // exclude the given word
-                    x.sorted.Equals(sorted, includeProperNouns ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
-                .Select(x => x.original);
+            var sorted = word.Sort();
 
-            return matches;
+            if (Corpus.ContainsKey(sorted))
+                return Corpus[sorted]
+                    .Where(x => x.Original != word)
+                    .Where(x => includeProperNouns ? true : char.IsLower(x.Original.First()))
+                    .Select(x => x.Original);
+
+            return new List<string>();
+        }
+
+        public IEnumerable<string> GetAnagrams(string word, int size, bool includeProperNouns)
+        {   
+            var sorted = word.Sort();
+            var permutations = GetPermutations(word, size);
+            var matches = new List<string>();
+            foreach (var perm in permutations)
+            {
+                if (Corpus.ContainsKey(perm.Sort()))                
+                    matches.AddRange(Corpus[sorted]
+                        .Where(x => x.Original != word)
+                        .Where(x => includeProperNouns ? true : char.IsLower(x.Original.First()))
+                        .Select(x => x.Original));
+            }
+
+            return new List<string>();
         }
 
         public CorpusStats GetStats()
         {
-            var counts = Corpus.Select(x => x.Length);
+            var words = Corpus.Values.ToList().SelectMany(x => x).ToList();
+            var sorted = words.OrderBy(x => x.Original.Length).Select(x => x.Original.Length);
             return new CorpusStats()
             {
-                Count = Corpus.Count,
-                Min = counts.Min(),
-                Max = counts.Max(),
-                Average = counts.Average(),
-                Median = counts.OrderByDescending(x => x).ElementAt(counts.Count() / 2)
+                Count = words.Count,
+                Min = sorted.Any() ? sorted.Min() : 0,
+                Max = sorted.Any() ? sorted.Max() : 0,
+                Average = sorted.Any() ? sorted.Average() : 0,
+                Median = sorted.Any() ? sorted.OrderByDescending(x => x).ElementAt(words.Count() / 2) : 0
             };
+        }
+
+        public IEnumerable<IEnumerable<string>> GetMostCommonAnagrams(int size)
+        {
+            return Corpus.Values.OrderByDescending(x => x.Count).Take(size).Select(x => x.Select(y => y.Original));
         }
     }
 }

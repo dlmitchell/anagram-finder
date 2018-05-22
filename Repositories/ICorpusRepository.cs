@@ -29,9 +29,14 @@ namespace Ibotta.Repositories
         IEnumerable<string> GetAnagrams(string word, bool includeProperNouns);
 
         /// <summary>
-        /// Returns a set of stats based on the corpus
+        /// Returns a list of the most common anagrams.
         /// </summary>
         IEnumerable<IEnumerable<string>>  GetMostCommonAnagrams(int size);
+
+        /// <summary>
+        /// Returns true or false if the given words are anagrams
+        /// </summary>
+        bool AreAnagrams(IEnumerable<string> words);
 
         /// <summary>
         /// Returns a set of stats based on the corpus

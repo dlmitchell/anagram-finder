@@ -37,5 +37,24 @@ namespace Ibotta.Controllers
             var anagrams = _repository.GetAnagrams(word, includeProperNouns ?? true).Take(limit ?? int.MaxValue);
             return Ok(new Anagram() { Anagrams = anagrams });
         }
+
+
+        /// <summary>
+        /// Takes a JSON array of English-language words and adds them to the corpus (data store).
+        /// </summary>
+        /// <remarks>
+        /// Any existing words will be replaced. No duplicates will be added.
+        /// </remarks>
+        [HttpPost("")]
+        [HttpPost(".{format}")]
+        public IActionResult Post([FromBody] WordsDTO words)
+        {       
+            var areAnagrams = false;
+
+            if (words != null && words.Words != null && words.Words.Any())
+                areAnagrams = _repository.AreAnagrams(words.Words);
+
+            return Ok(new { anagrams = areAnagrams });
+        }
     }
 }

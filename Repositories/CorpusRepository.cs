@@ -45,6 +45,15 @@ namespace Ibotta.Repositories
             return Corpus.GetAnagrams(word, includeProperNouns);
         }
 
+        public bool AreAnagrams(IEnumerable<string> words)
+        {   
+            // create a new corpus. 
+            // pick the first word, if it has the same number of anagrams - 1 (excluding itself)
+            // then the words are anagrams
+            var corpus = new Corpus(words);            
+            return corpus.GetAnagrams(words.First(), includeProperNouns: true).Count() == (words.Count() - 1);
+        }
+
         public CorpusStats GetStats()
         {
             return Corpus.GetStats();
